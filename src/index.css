@@ -110,3 +110,17 @@ textarea:hover {
 .btn-reply:hover p {
   color: #c4c6ef;
 }
+
+.btn-vote:hover {
+  border-color: transparent;
+}
+
+.div-replies::before {
+  content: "";
+  position: absolute;
+  left: 7%;
+  top: 0;
+  bottom: 16px;
+  width: 2px;
+  background-color: lightgray;
+}

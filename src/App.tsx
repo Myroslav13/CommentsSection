@@ -12,9 +12,11 @@ function App() {
   }, [])
 
   return (
-    <div className='d-flex flex-column align-items-center'>
-      <CommentSection dataJson={dataCommentsJson}></CommentSection>
-      <AddComment dataJson={dataUserJson}></AddComment>
+    <div className="d-flex flex-column align-items-center">
+      <div className='w-75'>
+        <CommentSection dataJson={dataCommentsJson}></CommentSection>
+        <AddComment dataJson={dataUserJson}></AddComment>
+      </div>
     </div>
   )
 }

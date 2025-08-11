@@ -77,6 +77,10 @@ button:focus-visible {
   color: #4f52b1;
 }
 
+.p-delete {
+  color: #ed6565;
+}
+
 .p-date, label {
   color: gray;
 }
@@ -99,16 +103,20 @@ textarea:hover {
   cursor: pointer;
 }
 
-.btn-reply {
+.btn-reply, .btn-delete {
   background-color: white;
 }
 
-.btn-reply:hover {
+.btn-reply:hover, .btn-delete:hover {
   border-color: transparent;
 }
 
 .btn-reply:hover p {
   color: #c4c6ef;
+}
+
+.btn-delete:hover p {
+  color: #ecbac5;
 }
 
 .btn-vote:hover {
@@ -123,4 +131,12 @@ textarea:hover {
   bottom: 16px;
   width: 2px;
   background-color: lightgray;
+}
+
+.p-you {
+  color: white;
+  background-color: #4f52b1;
+  font-weight: bold;
+  padding: 0px 10px 3px 10px;
+  border-radius: 2px;
 }

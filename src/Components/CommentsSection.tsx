@@ -1,14 +1,36 @@
-import type { Comment } from "./interfaces.tsx"
+import type { Comment, User } from "./interfaces.tsx"
 
 interface Props {
-  dataJson: Comment[];
+    dataComments: Comment[];
+    dataUser: User;
+    setCommentsDataJson:React.Dispatch<React.SetStateAction<Comment[]>>;
 }
 
-function CommentSection({dataJson}:Props) {
+function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
+    function handleDelete(id: number) {
+    setCommentsDataJson(prevData => 
+        prevData
+            .filter(comment => comment.id !== id)
+            .map(comment => ({
+                ...comment,
+                replies: comment.replies.filter(reply => reply.id !== id)
+            }))
+        );
+    }
+
+
+    function handleEdit() {
+
+    }
+
+    function handleReply() {
+
+    }
+
     return (
         <div className='d-flex align-items-center flex-column'>
             {
-                dataJson.map((el, index) => (
+                dataComments.map((el, index) => (
                     <>
                         {/* Comment */}
                         <div className="d-flex bg-white rounded-3 p-4 mb-3 w-100 align-items-center" key={index}>
@@ -18,18 +40,32 @@ function CommentSection({dataJson}:Props) {
                                 <button className="btn-vote p-0"><img src="./images/icon-minus.svg"></img></button>
                             </div>
 
-                            <div>
-                                <div className="d-flex justify-content-between pb-2">
+                            <div className="w-100">
+                                <div className="d-flex justify-content-between pb-2 w-100">
                                     <div className="d-flex align-items-center gap-2">
                                         <img src={el.user.image.png} width={30} alt={el.user.username} title={el.user.username}></img>
-                                        <h2 className="m-0 fs-6">{el.user.username}</h2>
+                                        <h2 className="m-0 fs-6">{el.user.username}</h2>               
+                                        {dataUser.username === el.user.username ? <p className="m-0 p-you">you</p> : null}
                                         <p className="m-0 p-date">{el.createdAt}</p>
                                     </div>
 
-                                    <button className="d-flex align-items-center gap-2 btn-reply">
-                                        <img src="./images/icon-reply.svg" width={15} height={15} alt="reply"></img>
-                                        <p className="m-0 p-reply fw-bold">Reply</p>
-                                    </button>
+                                    {dataUser.username === el.user.username ? 
+                                        <div className="d-flex">
+                                            <button className="d-flex align-items-center gap-2 btn-delete">
+                                                <img src="./images/icon-delete.svg" width={15} height={15} alt="delete"></img>
+                                                <p className="m-0 p-delete fw-bold" onClick={() => handleDelete(el.id)}>Delete</p>
+                                            </button>
+                                            <button className="d-flex align-items-center gap-2 btn-reply">
+                                                <img src="./images/icon-edit.svg" width={15} height={15} alt="edit"></img>
+                                                <p className="m-0 p-reply fw-bold" onClick={handleEdit}>Edit</p>
+                                            </button>
+                                        </div> 
+                                        :
+                                        <button className="d-flex align-items-center gap-2 btn-reply">
+                                            <img src="./images/icon-reply.svg" width={15} height={15} alt="reply"></img>
+                                            <p className="m-0 p-reply fw-bold" onClick={handleReply}>Reply</p>
+                                        </button>
+                                    }
                                 </div>
 
                                 <div>
@@ -53,13 +89,27 @@ function CommentSection({dataJson}:Props) {
                                             <div className="d-flex align-items-center gap-2">
                                                 <img src={reply.user.image.png} width={30} alt={reply.user.username} title={reply.user.username}></img>
                                                 <h2 className="m-0 fs-6">{reply.user.username}</h2>
+                                                {dataUser.username === reply.user.username ? <p className="m-0 p-you">you</p> : null}
                                                 <p className="m-0 p-date">{reply.createdAt}</p>
                                             </div>
-
+                                            
+                                            {dataUser.username === reply.user.username ? 
+                                            <div className="d-flex">
+                                                <button className="d-flex align-items-center gap-2 btn-delete">
+                                                    <img src="./images/icon-delete.svg" width={15} height={15} alt="delete"></img>
+                                                    <p className="m-0 p-delete fw-bold" onClick={() => handleDelete(reply.id)}>Delete</p>
+                                                </button>
+                                                <button className="d-flex align-items-center gap-2 btn-reply">
+                                                    <img src="./images/icon-edit.svg" width={15} height={15} alt="edit"></img>
+                                                    <p className="m-0 p-reply fw-bold" onClick={handleEdit}>Edit</p>
+                                                </button>
+                                            </div> 
+                                            :
                                             <button className="d-flex align-items-center gap-2 btn-reply">
                                                 <img src="./images/icon-reply.svg" width={15} height={15} alt="reply"></img>
-                                                <p className="m-0 p-reply fw-bold">Reply</p>
+                                                <p className="m-0 p-reply fw-bold" onClick={handleReply}>Reply</p>
                                             </button>
+                                            }
                                         </div>
 
                                         <div>

@@ -1,12 +1,8 @@
-import { useEffect, useState } from "react"
+interface Props {
+    dataJson: any[],
+}
 
-function CommentSection() {
-    const [dataJson, setDataJson] = useState<any[]>([]);
-
-    useEffect(() => {
-        fetch("./data.json").then(response => response.json()).then(data => setDataJson(data.comments))
-    }, [])
-
+function CommentSection({dataJson}:Props) {
     return (
         <div className='d-flex align-items-center flex-column'>
             {
@@ -21,13 +17,13 @@ function CommentSection() {
                         <div>
                             <div className="d-flex justify-content-between pb-2">
                                 <div className="d-flex align-items-center gap-2">
-                                    <img src={el.user.image.png} width={30}></img>
+                                    <img src={el.user.image.png} width={30} alt={el.user.username} title={el.user.username}></img>
                                     <h2 className="m-0 fs-6">{el.user.username}</h2>
                                     <p className="m-0 p-date">{el.createdAt}</p>
                                 </div>
 
-                                <button className="d-flex align-items-center gap-2">
-                                    <img src="./images/icon-reply.svg" width={15} height={15}></img>
+                                <button className="d-flex align-items-center gap-2 btn-reply">
+                                    <img src="./images/icon-reply.svg" width={15} height={15} alt="reply"></img>
                                     <p className="m-0 p-reply fw-bold">Reply</p>
                                 </button>
                             </div>

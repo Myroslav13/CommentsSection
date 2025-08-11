@@ -77,6 +77,36 @@ button:focus-visible {
   color: #4f52b1;
 }
 
-.p-date {
+.p-date, label {
   color: gray;
+}
+
+.btn-send {
+  background-color: #4f52b1;
+}
+
+.btn-send:hover {
+  background-color: #c4c6ef;
+  border-color: #c4c6ef;
+}
+
+textarea {
+  resize: none;
+}
+
+textarea:hover {
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.btn-reply {
+  background-color: white;
+}
+
+.btn-reply:hover {
+  border-color: transparent;
+}
+
+.btn-reply:hover p {
+  color: #c4c6ef;
 }

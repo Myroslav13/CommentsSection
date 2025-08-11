@@ -9,7 +9,14 @@ interface Props {
 
 function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
     const [deleteBtnClicked, setDeleteBtnClicked] = useState(false)
+    const [editBtnClicked, setEditBtnClicked] = useState(false)
+    const [replyBtnClicked, setReplyBtnClicked] = useState(false)
+
     const [commentIdToDelete, setCommentIdToDelete] = useState(-1)
+    const [commentIdToEdit, setCommentIdToEdit] = useState(-1)
+    const [commentIdToReply, setCommentIdToReply] = useState(-1)
+
+    const [editText, setEditText] = useState("")
 
     function handleDelete(id: number) {
         setCommentsDataJson(prevData =>
@@ -21,10 +28,27 @@ function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
                 .filter(comment => comment.id !== id)
         );
     }
+    
 
+    function handleEdit(id: number) {
+        setCommentsDataJson(prevData => 
+            prevData.map(comment => {
+                if (comment.id === id) {
+                    return {...comment, content: editText};
+                } else {
+                    return {
+                        ...comment,
+                        replies: comment.replies.map(reply => 
+                        reply.id === id 
+                            ? {...reply, content: editText} 
+                            : reply
+                        )
+                    };
+                }
+            })
+        );
 
-    function handleEdit() {
-
+        setEditBtnClicked(false)
     }
 
     function handleReply() {
@@ -85,7 +109,7 @@ function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
                                                 </button>
                                                 <button className="d-flex align-items-center gap-2 btn-reply">
                                                     <img src="./images/icon-edit.svg" width={15} height={15} alt="edit"></img>
-                                                    <p className="m-0 p-reply fw-bold" onClick={handleEdit}>Edit</p>
+                                                    <p className="m-0 p-reply fw-bold" onClick={() => {setEditBtnClicked(true); setEditText(el.content); setCommentIdToEdit(el.id)}}>Edit</p>
                                                 </button>
                                             </div> 
                                             :
@@ -96,8 +120,19 @@ function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
                                         }
                                     </div>
 
-                                    <div>
+                                    <div className="w-100">
+                                        {editBtnClicked === true && el.id === commentIdToEdit ? 
+                                        <div className="d-flex gap-3">
+                                            <div className="form-floating rounded-2 w-100">
+                                                <textarea className="form-control" placeholder="Add a comment..." id="floatingTextarea2" style={{height: "70px"}} onChange={(e) => setEditText(e.target.value)} value={editText}></textarea>
+                                                <label htmlFor="floatingTextarea2">Edit message</label>
+                                            </div>
+
+                                            <button className="text-white btn-send py-1 px-4" style={{height: "40px"}} onClick={() => handleEdit(commentIdToEdit)}>UPDATE</button>
+                                        </div>
+                                        :
                                         <p className="text-start">{el.content}</p>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -112,7 +147,7 @@ function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
                                             <button className="btn-vote p-0"><img src="./images/icon-minus.svg"></img></button>
                                         </div>
 
-                                        <div>
+                                        <div className="w-100">
                                             <div className="d-flex justify-content-between pb-2">
                                                 <div className="d-flex align-items-center gap-2">
                                                     <img src={reply.user.image.png} width={30} alt={reply.user.username} title={reply.user.username}></img>
@@ -129,7 +164,7 @@ function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
                                                     </button>
                                                     <button className="d-flex align-items-center gap-2 btn-reply">
                                                         <img src="./images/icon-edit.svg" width={15} height={15} alt="edit"></img>
-                                                        <p className="m-0 p-reply fw-bold" onClick={handleEdit}>Edit</p>
+                                                        <p className="m-0 p-reply fw-bold" onClick={() => {setEditBtnClicked(true); setEditText(reply.content); setCommentIdToEdit(reply.id)}}>Edit</p>
                                                     </button>
                                                 </div> 
                                                 :
@@ -140,8 +175,19 @@ function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
                                                 }
                                             </div>
 
-                                            <div>
+                                            <div className="w-100">
+                                                {editBtnClicked === true && reply.id === commentIdToEdit ? 
+                                                <div className="d-flex gap-3">
+                                                    <div className="form-floating rounded-2 w-100">
+                                                        <textarea className="form-control" placeholder="Add a comment..." id="floatingTextarea2" style={{height: "70px"}} onChange={(e) => setEditText(e.target.value)} value={editText}></textarea>
+                                                        <label htmlFor="floatingTextarea2">Edit message</label>
+                                                    </div>
+
+                                                    <button className="text-white btn-send py-1 px-4" style={{height: "40px"}} onClick={() => handleEdit(commentIdToEdit)}>UPDATE</button>
+                                                </div>
+                                                :
                                                 <p className="text-start">{reply.content}</p>
+                                                }
                                             </div>
                                         </div>
                                     </div>

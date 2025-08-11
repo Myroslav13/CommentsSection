@@ -28,6 +28,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #f5f6fa;
 }
 
 h1 {
@@ -65,4 +66,17 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.comment-side-div {
+  background-color: #f5f6fa;
+  color: #4f52b1;
+}
+
+.p-reply {
+  color: #4f52b1;
+}
+
+.p-date {
+  color: gray;
 }

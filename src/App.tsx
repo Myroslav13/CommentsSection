@@ -14,8 +14,8 @@ function App() {
   return (
     <div className="d-flex flex-column align-items-center">
       <div className='w-75'>
-        <CommentSection dataComments={dataCommentsJson} dataUser={dataUserJson} setCommentsDataJson={setCommentsDataJson}></CommentSection>
-        <AddComment dataJson={dataUserJson} setCommentsDataJson={setCommentsDataJson}></AddComment>
+        <CommentSection dataComments={dataCommentsJson} dataUser={dataUserJson} commentsDataJson={dataCommentsJson} setCommentsDataJson={setCommentsDataJson}></CommentSection>
+        <AddComment dataJson={dataUserJson} commentsDataJson={dataCommentsJson} setCommentsDataJson={setCommentsDataJson}></AddComment>
       </div>
     </div>
   )

@@ -1,13 +1,15 @@
 import { useState } from "react";
-import type { Comment, User } from "./interfaces.tsx"
+import type { Comment, User } from "../interfaces.tsx"
+import { lastIdFinding } from "../lastIdFinding.tsx"
 
 interface Props {
     dataComments: Comment[];
     dataUser: User;
+    commentsDataJson: Comment[];
     setCommentsDataJson:React.Dispatch<React.SetStateAction<Comment[]>>;
 }
 
-function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
+function CommentSection({dataComments, dataUser, commentsDataJson, setCommentsDataJson}:Props) {
     const [deleteBtnClicked, setDeleteBtnClicked] = useState(false)
     const [editBtnClicked, setEditBtnClicked] = useState(false)
     const [replyBtnClicked, setReplyBtnClicked] = useState(false)
@@ -17,6 +19,8 @@ function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
     const [commentIdToReply, setCommentIdToReply] = useState(-1)
 
     const [editText, setEditText] = useState("")
+    const [replyText, setReplyText] = useState("")
+    const [replyingToText, setReplyingToText] = useState("")
 
     function handleDelete(id: number) {
         setCommentsDataJson(prevData =>
@@ -28,7 +32,6 @@ function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
                 .filter(comment => comment.id !== id)
         );
     }
-    
 
     function handleEdit(id: number) {
         setCommentsDataJson(prevData => 
@@ -51,8 +54,34 @@ function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
         setEditBtnClicked(false)
     }
 
-    function handleReply() {
+    function handleReply(id: number) {
+        const lastId = lastIdFinding(commentsDataJson)
 
+        const newReply = {
+            "id": (lastId + 1),
+            "content": replyText,
+            "createdAt": "just now",
+            "score": 0,
+            "replyingTo": replyingToText,
+            "user": {
+                "image": { 
+                    "png": dataUser.image.png,
+                    "webp": dataUser.image.webp,
+                },
+                "username": dataUser.username,
+            }
+        }
+
+        setCommentsDataJson(prevData => 
+            prevData.map(comment => 
+                comment.id === id 
+                    ? { ...comment, replies: [...comment.replies, newReply] } 
+                    : comment
+            )
+        )
+
+        setReplyText("")
+        setReplyBtnClicked(false)
     }
 
     return (
@@ -109,13 +138,13 @@ function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
                                                 </button>
                                                 <button className="d-flex align-items-center gap-2 btn-reply">
                                                     <img src="./images/icon-edit.svg" width={15} height={15} alt="edit"></img>
-                                                    <p className="m-0 p-reply fw-bold" onClick={() => {setEditBtnClicked(true); setEditText(el.content); setCommentIdToEdit(el.id)}}>Edit</p>
+                                                    <p className="m-0 p-reply fw-bold" onClick={() => {setEditBtnClicked(!editBtnClicked); setEditText(el.content); setCommentIdToEdit(el.id)}}>Edit</p>
                                                 </button>
                                             </div> 
                                             :
                                             <button className="d-flex align-items-center gap-2 btn-reply">
                                                 <img src="./images/icon-reply.svg" width={15} height={15} alt="reply"></img>
-                                                <p className="m-0 p-reply fw-bold" onClick={handleReply}>Reply</p>
+                                                <p className="m-0 p-reply fw-bold" onClick={() => {setReplyBtnClicked(!replyBtnClicked); setReplyingToText(el.user.username); setCommentIdToReply(el.id)}}>Reply</p>
                                             </button>
                                         }
                                     </div>
@@ -138,7 +167,7 @@ function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
                             </div>
 
                             {/* Replies */}
-                            <div className="d-flex align-items-end flex-column div-replies position-relative">
+                            <div className="d-flex align-items-end flex-column div-replies position-relative w-100">
                                 {el.replies.map((reply, indexReply) => (
                                     <div className="d-flex bg-white rounded-3 p-4 mb-3 align-items-center" key={indexReply} style={{width: "85%"}}>
                                         <div className="rounded-2 comment-side-div px-2 me-4 d-flex flex-column gap-2">
@@ -164,13 +193,13 @@ function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
                                                     </button>
                                                     <button className="d-flex align-items-center gap-2 btn-reply">
                                                         <img src="./images/icon-edit.svg" width={15} height={15} alt="edit"></img>
-                                                        <p className="m-0 p-reply fw-bold" onClick={() => {setEditBtnClicked(true); setEditText(reply.content); setCommentIdToEdit(reply.id)}}>Edit</p>
+                                                        <p className="m-0 p-reply fw-bold" onClick={() => {setEditBtnClicked(!editBtnClicked); setEditText(reply.content); setCommentIdToEdit(reply.id)}}>Edit</p>
                                                     </button>
                                                 </div> 
                                                 :
                                                 <button className="d-flex align-items-center gap-2 btn-reply">
                                                     <img src="./images/icon-reply.svg" width={15} height={15} alt="reply"></img>
-                                                    <p className="m-0 p-reply fw-bold" onClick={handleReply}>Reply</p>
+                                                    <p className="m-0 p-reply fw-bold" onClick={() => {setReplyBtnClicked(!replyBtnClicked); setReplyingToText(reply.user.username); setCommentIdToReply(el.id)}}>Reply</p>
                                                 </button>
                                                 }
                                             </div>
@@ -186,12 +215,30 @@ function CommentSection({dataComments, dataUser, setCommentsDataJson}:Props) {
                                                     <button className="text-white btn-send py-1 px-4" style={{height: "40px"}} onClick={() => handleEdit(commentIdToEdit)}>UPDATE</button>
                                                 </div>
                                                 :
-                                                <p className="text-start">{reply.content}</p>
+                                                <p className="text-start"><span className="fw-bold" style={{color: "navy"}}>@{reply.replyingTo},</span> {reply.content}</p>
                                                 }
                                             </div>
                                         </div>
                                     </div>
                                 ))}
+
+                                {/* Reply adding */}
+                                {(replyBtnClicked === true && commentIdToReply === el.id) ? 
+                                    <div className="d-flex bg-white rounded-3 p-4 mb-3 gap-3" style={{width: "85%"}}>
+                                        <div className="d-flex gap-3 w-100">
+                                            <img src={dataUser.image.png} alt={dataUser.username} title={dataUser.username} width={30} height={30}></img>
+
+                                            <div className="form-floating rounded-2 w-100">
+                                                <textarea className="form-control" placeholder="Add a comment..." id="floatingTextarea2" style={{height: "70px"}} onChange={(e) => setReplyText(e.target.value)} value={replyText}></textarea>
+                                                <label htmlFor="floatingTextarea2">Add a reply</label>
+                                            </div>
+                                        </div>
+
+                                        <button className="text-white btn-send py-1 px-4" style={{height: "40px"}} onClick={() => handleReply(commentIdToReply)}>REPLY</button>
+                                    </div>
+                                    :
+                                    <></>
+                                }
                             </div>
                         </>
                     ))

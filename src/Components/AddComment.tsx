@@ -1,27 +1,19 @@
 import { useState } from "react"
-import type { User, Comment } from "./interfaces.tsx"
+import type { User, Comment } from "../interfaces.tsx"
+import { lastIdFinding } from "../lastIdFinding.tsx"
 
 interface Props {
-    dataJson: User,
+    dataJson: User;
+    commentsDataJson: Comment[];
     setCommentsDataJson:React.Dispatch<React.SetStateAction<Comment[]>>
 }
 
-function AddComment({dataJson, setCommentsDataJson}:Props) {
+function AddComment({dataJson, commentsDataJson, setCommentsDataJson}:Props) {
     const [commentText, setCommentText] = useState("")
 
     function handleSend() {
         setCommentsDataJson(prevData => {
-            let lastId = prevData.length > 0 ? prevData[prevData.length - 1].id : 0
-
-            const allReplies = prevData.flatMap(comment => comment.replies);
-
-            const maxReplyId = allReplies.length > 0
-            ? Math.max(...allReplies.map(r => r.id))
-            : 0;
-
-            if (maxReplyId > lastId) {
-                lastId = maxReplyId
-            }
+            const lastId = lastIdFinding(commentsDataJson)
 
             const newComment = {
                 id: (lastId + 1),

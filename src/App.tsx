@@ -13,9 +13,11 @@ function App() {
 
   return (
     <div className="d-flex flex-column align-items-center">
-      <div className='w-75'>
-        <CommentSection dataComments={dataCommentsJson} dataUser={dataUserJson} commentsDataJson={dataCommentsJson} setCommentsDataJson={setCommentsDataJson}></CommentSection>
-        <AddComment dataJson={dataUserJson} commentsDataJson={dataCommentsJson} setCommentsDataJson={setCommentsDataJson}></AddComment>
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-9">
+            <CommentSection dataComments={dataCommentsJson} dataUser={dataUserJson} commentsDataJson={dataCommentsJson} setCommentsDataJson={setCommentsDataJson}></CommentSection>
+            <AddComment dataJson={dataUserJson} commentsDataJson={dataCommentsJson} setCommentsDataJson={setCommentsDataJson}></AddComment>
+        </div>
       </div>
     </div>
   )

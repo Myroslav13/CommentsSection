@@ -140,3 +140,23 @@ textarea:hover {
   padding: 0px 10px 3px 10px;
   border-radius: 2px;
 }
+
+.div-add-comments {
+  height: 120px;
+}
+
+@media (max-width: 768px) {
+  .div-add-comments {
+    height: 160px;
+  }
+
+  .btn-reply, .btn-delete {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .btn-reply, .btn-delete {
+    padding: 5px;
+  }
+}

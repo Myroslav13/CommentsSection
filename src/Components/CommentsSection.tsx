@@ -95,15 +95,19 @@ function CommentSection({dataComments, dataUser, commentsDataJson, setCommentsDa
                     <div className="modal-backdrop fade show"></div>
 
                     <div className="modal show d-block">
-                        <div className="modal-dialog modal-dialog-centered w-25">
-                            <div className="modal-content text-start p-4">
-                                <h5>Delete comment</h5>
-                            
-                                <p>Are you sure you want to delete this comment? This will remove the comment and can't be undone.</p>
-                                
-                                <div className="d-flex gap-3 justify-content-between align-items-center">
-                                    <button type="button" className="btn w-50" data-bs-dismiss="modal" onClick={() => setDeleteBtnClicked(false)} style={{backgroundColor: "gray", color: "white"}}>NO, CANCEL</button>
-                                    <button type="button" className="btn w-50" onClick={() => {setDeleteBtnClicked(false); handleDelete(commentIdToDelete)}} style={{backgroundColor: "#ed6565", color: "white"}}>YES, DELETE</button>
+                        <div className="row justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+                            <div className="col-11 col-md-6 col-lg-4 col-xl-3">
+                                <div className="modal-dialog modal-dialog-centered">
+                                    <div className="modal-content text-start p-4">
+                                        <h5>Delete comment</h5>
+                                    
+                                        <p>Are you sure you want to delete this comment? This will remove the comment and can't be undone.</p>
+                                        
+                                        <div className="d-flex gap-3 justify-content-between align-items-center">
+                                            <button type="button" className="btn w-50" data-bs-dismiss="modal" onClick={() => setDeleteBtnClicked(false)} style={{backgroundColor: "gray", color: "white"}}>NO, CANCEL</button>
+                                            <button type="button" className="btn w-50" onClick={() => {setDeleteBtnClicked(false); handleDelete(commentIdToDelete)}} style={{backgroundColor: "#ed6565", color: "white"}}>YES, DELETE</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -148,7 +152,7 @@ function CommentSection({dataComments, dataUser, commentsDataJson, setCommentsDa
                                             :
                                             <button className="d-none d-md-flex align-items-center gap-2 btn-reply">
                                                 <img src="./images/icon-reply.svg" width={15} height={15} alt="reply"></img>
-                                                <p className="m-0 p-reply fw-bold" onClick={() => {setReplyBtnClicked(!replyBtnClicked); setReplyingToText(el.user.username); setCommentIdToReply(el.id)}}>Reply</p>
+                                                <p className="m-0 p-reply fw-bold" onClick={() => {setReplyBtnClicked(true); setReplyingToText(el.user.username); setCommentIdToReply(el.id)}}>Reply</p>
                                             </button>
                                         }
                                     </div>
@@ -180,7 +184,7 @@ function CommentSection({dataComments, dataUser, commentsDataJson, setCommentsDa
                                     {dataUser.username !== el.user.username ?
                                     <button className="d-flex align-items-center gap-2 btn-reply">
                                         <img src="./images/icon-reply.svg" width={15} height={15} alt="reply"></img>
-                                        <p className="m-0 p-reply fw-bold" onClick={() => {setReplyBtnClicked(!replyBtnClicked); setReplyingToText(el.user.username); setCommentIdToReply(el.id)}}>Reply</p>
+                                        <p className="m-0 p-reply fw-bold" onClick={() => {setReplyBtnClicked(true); setReplyingToText(el.user.username); setCommentIdToReply(el.id)}}>Reply</p>
                                     </button>
                                     :
                                     <div className="d-flex">
@@ -231,7 +235,7 @@ function CommentSection({dataComments, dataUser, commentsDataJson, setCommentsDa
                                                 :
                                                 <button className="d-none d-lg-flex align-items-center gap-2 btn-reply">
                                                     <img src="./images/icon-reply.svg" width={15} height={15} alt="reply"></img>
-                                                    <p className="m-0 p-reply fw-bold" onClick={() => {setReplyBtnClicked(!replyBtnClicked); setReplyingToText(reply.user.username); setCommentIdToReply(el.id)}}>Reply</p>
+                                                    <p className="m-0 p-reply fw-bold" onClick={() => {setReplyBtnClicked(true); setReplyingToText(reply.user.username); setCommentIdToReply(el.id)}}>Reply</p>
                                                 </button>
                                                 }
                                             </div>
@@ -260,7 +264,7 @@ function CommentSection({dataComments, dataUser, commentsDataJson, setCommentsDa
                                                         {dataUser.username !== reply.user.username ? 
                                                         <button className="d-flex align-items-center gap-2 btn-reply">
                                                             <img src="./images/icon-reply.svg" width={15} height={15} alt="reply"></img>
-                                                            <p className="m-0 p-reply fw-bold" onClick={() => {setReplyBtnClicked(!replyBtnClicked); setReplyingToText(el.user.username); setCommentIdToReply(el.id)}}>Reply</p>
+                                                            <p className="m-0 p-reply fw-bold" onClick={() => {setReplyBtnClicked(true); setReplyingToText(el.user.username); setCommentIdToReply(el.id)}}>Reply</p>
                                                         </button>
                                                         :
                                                         <div className="d-flex d-lg-none justify-content-between">

@@ -11,7 +11,10 @@ interface Props {
 function AddComment({dataJson, commentsDataJson, setCommentsDataJson}:Props) {
     const [commentText, setCommentText] = useState("")
 
+    // Send processing
     function handleSend() {
+        if (!commentText) return
+
         setCommentsDataJson(prevData => {
             const lastId = lastIdFinding(commentsDataJson)
 
@@ -33,7 +36,7 @@ function AddComment({dataJson, commentsDataJson, setCommentsDataJson}:Props) {
     return (
         <div className="d-block d-md-flex justify-content-between bg-white rounded-3 p-4 w-100 gap-3 div-add-comments">
             <div className="d-flex gap-3 w-100">
-                <img className="d-none d-md-block" src={dataJson.image.png} alt={dataJson.username} title={dataJson.username} width={30} height={30}></img>
+                <img className="d-none d-md-block" src={dataJson?.image?.png} alt={dataJson.username} title={dataJson.username} width={30} height={30}></img>
 
                 <div className="form-floating rounded-2 w-100">
                     <textarea className="form-control" placeholder="Add a comment..." id="floatingTextarea2" style={{height: "70px"}} onChange={(e) => setCommentText(e.target.value)} value={commentText}></textarea>
@@ -42,7 +45,7 @@ function AddComment({dataJson, commentsDataJson, setCommentsDataJson}:Props) {
             </div>
 
             <div className="d-flex justify-content-between d-md-none pt-3">
-                <img src={dataJson.image.png} alt={dataJson.username} title={dataJson.username} width={30} height={30}></img>
+                <img src={dataJson?.image?.png} alt={dataJson.username} title={dataJson.username} width={30} height={30}></img>
                 <button className="text-white btn-send py-1 px-4" style={{height: "40px"}} onClick={handleSend}>SEND</button>
             </div>
 
